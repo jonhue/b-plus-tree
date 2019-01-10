@@ -11,7 +11,13 @@ while True:
             tree.insert(i, str(i))
             print(str(i) + ': ' + str(tree))
     elif command == 'lookup':
-        print(tree.lookup(int(input('Key: '))))
+        result = tree.lookup(int(input('Key: ')))
+        if result is None:
+            print(None)
+        else:
+            print(result.data)
+    elif command == 'rangelookup':
+        print(tree.rangelookup(int(input('Start: ')), int(input('End: '))))
     elif command == 'print':
         print(tree)
     elif command == 'exit':

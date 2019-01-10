@@ -16,5 +16,8 @@ class Tree:
     def lookup(self, key: int):
         return self.root_node.lookup(key)
 
+    def rangelookup(self, start: int, end: int):
+        return self.root_node.rangelookup(start, end)
+
     def insert(self, key: int, data):
         return self.root_node.insert(key, data)

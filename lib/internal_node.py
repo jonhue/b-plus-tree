@@ -14,6 +14,9 @@ class InternalNode(TreeNode):
     def lookup(self, key: int):
         return self._find_child_node(key).lookup(key)
 
+    def rangelookup(self, start: int, end: int):
+        return self._find_child_node(start).rangelookup(start, end)
+
     def insert(self, key: int, data):
         return self._find_child_node(key).insert(key, data)
 
