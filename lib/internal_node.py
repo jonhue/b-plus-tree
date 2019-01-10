@@ -12,10 +12,10 @@ class InternalNode(TreeNode):
         return '<InternalNode child_nodes=' + str(self.child_nodes) + ', references=' + str(self.references) + '>'
 
     def lookup(self, key: int):
-        self._find_child_node(key).lookup(key)
+        return self._find_child_node(key).lookup(key)
 
     def insert(self, key: int, data):
-        self._find_child_node(key).insert(key, data)
+        return self._find_child_node(key).insert(key, data)
 
     def resolve(self, reference, left_child_node, right_child_node):
         if len(self.references) < 2 * TreeNode.k:
