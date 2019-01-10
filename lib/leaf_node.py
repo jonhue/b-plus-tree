@@ -16,7 +16,20 @@ class LeafNode(TreeNode):
     def lookup(self, key: int):
         for tid in self.data:
             if tid.key == key:
-                return tid.data
+                return tid
+
+    def rangelookup(self, start: int, end: int, result: List[TID] = []):
+        end_reached = False
+        for tid in self.data:
+            if tid.key >= start and tid.key <= end:
+                result.append(tid)
+            if tid.key >= end:
+                end_reached = True
+
+        if end_reached:
+            return result
+        else:
+            return self.next_leaf.rangelookup(start, end, result)
 
     def insert(self, key: int, data):
         self.data.append(TID(key, data))
