@@ -22,13 +22,23 @@ class LeafNode(TreeNode):
         self.data.append(TID(key, data))
         if len(self.data) <= 2 * TreeNode.k_leaf:
             self.data = sorted(self.data, key=lambda tid: tid.key)
+        elif isinstance(self.parent_node, InternalNode):
+            self._resolve_to_next_node()
         else:
-            right_leaf = LeafNode(self.parent_node, self.data[len(self.data)//2:], self.next_leaf)
-            left_leaf = LeafNode(self.parent_node, self.data[:len(self.data)//2], right_leaf)
-            if isinstance(self.parent_node, InternalNode):
-                self.parent_node.resolve(left_leaf.data[len(left_leaf.data) - 1].key, left_leaf, right_leaf)
-            else:
-                node = InternalNode(self.parent_node, [left_leaf, right_leaf], [left_leaf.data[len(left_leaf.data) - 1].key])
-                left_leaf.parent_node = node
-                right_leaf.parent_node = node
-                self.parent_node.root_node = node
+            self._create_root_node()
+
+    def _create_root_node(self):
+        left_leaf, right_leaf = self._split()
+        node = InternalNode(self.parent_node, [left_leaf, right_leaf], [left_leaf.data[len(left_leaf.data) - 1].key])
+        left_leaf.parent_node = node
+        right_leaf.parent_node = node
+        self.parent_node.root_node = node
+
+    def _resolve_to_next_node(self):
+        left_leaf, right_leaf = self._split()
+        self.parent_node.resolve(left_leaf.data[len(left_leaf.data) - 1].key, left_leaf, right_leaf)
+
+    def _split(self):
+        right_leaf = LeafNode(self.parent_node, self.data[len(self.data)//2:], self.next_leaf)
+        left_leaf = LeafNode(self.parent_node, self.data[:len(self.data)//2], right_leaf)
+        return left_leaf, right_leaf
